@@ -1,0 +1,11 @@
+{
+  "name": "portfolio_website",
+  "version": "1.0.0",
+  "description": "reponsive portfolio website",
+  "main": "index.js",
+  "scripts": {
+    "node-sass": "node-sass -o css scss -w"
+  },
+  "author": "",
+  "license": "ISC"
+}
