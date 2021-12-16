@@ -1,5 +1,355 @@
 https://bit.ly/32sxJcL
 https://bit.ly/2Fp6ebF 
+html, body {
+    background: #efefef;      
+    height:100%;  
+    font-family: 'Poppins', sans-serif;
+  }
+  #center-text {          
+    display: flex;
+    flex: 1;
+    flex-direction:column; 
+    justify-content: center;
+    align-items: center;  
+    height:100%;
+    
+  }
+  #chat-circle {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    background: #5A5EB9;
+    width: 80px;
+    height: 80px;  
+    border-radius: 50%;
+    color: white;
+    padding: 28px;
+    cursor: pointer;
+    box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.6), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  }
+  
+  .btn#my-btn {
+       background: white;
+      padding-top: 13px;
+      padding-bottom: 12px;
+      border-radius: 45px;
+      padding-right: 40px;
+      padding-left: 40px;
+      color: #5865C3;
+  }
+  #chat-overlay {
+      background: rgba(255,255,255,0.1);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: none;
+  }
+  
+  
+  .chat-box {
+    display:none;
+    background: #efefef;
+    position:fixed;
+    right:30px;
+    bottom:50px;  
+    width:350px;
+    max-width: 85vw;
+    max-height:100vh;
+    border-radius:5px;  
+    background: #fff;
+  /*   box-shadow: 0px 5px 35px 9px #464a92; */
+    box-shadow: 0px 5px 35px 9px #ccc;
+  }
+  .chat-box-toggle {
+    float:right;
+    margin-right:15px;
+    cursor:pointer;
+  }
+  .chat-box-header {
+    background: orangered;
+    height:auto;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px; 
+    color:white;
+    /* text-align:center; */
+    font-size:20px;
+    padding-top:17px;
+    padding-bottom: 60px;
+  }
+  .chat-box-body {
+    position: relative;  
+    height:370px;  
+    height:100%;
+    border:1px solid #ccc;  
+    /* overflow: hidden; */
+  }
+  /* .chat-box-body:after {
+    content: "";
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAgOCkiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PGNpcmNsZSBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIgY3g9IjE3NiIgY3k9IjEyIiByPSI0Ii8+PHBhdGggZD0iTTIwLjUuNWwyMyAxMW0tMjkgODRsLTMuNzkgMTAuMzc3TTI3LjAzNyAxMzEuNGw1Ljg5OCAyLjIwMy0zLjQ2IDUuOTQ3IDYuMDcyIDIuMzkyLTMuOTMzIDUuNzU4bTEyOC43MzMgMzUuMzdsLjY5My05LjMxNiAxMC4yOTIuMDUyLjQxNi05LjIyMiA5LjI3NC4zMzJNLjUgNDguNXM2LjEzMSA2LjQxMyA2Ljg0NyAxNC44MDVjLjcxNSA4LjM5My0yLjUyIDE0LjgwNi0yLjUyIDE0LjgwNk0xMjQuNTU1IDkwcy03LjQ0NCAwLTEzLjY3IDYuMTkyYy02LjIyNyA2LjE5Mi00LjgzOCAxMi4wMTItNC44MzggMTIuMDEybTIuMjQgNjguNjI2cy00LjAyNi05LjAyNS0xOC4xNDUtOS4wMjUtMTguMTQ1IDUuNy0xOC4xNDUgNS43IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTg1LjcxNiAzNi4xNDZsNS4yNDMtOS41MjFoMTEuMDkzbDUuNDE2IDkuNTIxLTUuNDEgOS4xODVIOTAuOTUzbC01LjIzNy05LjE4NXptNjMuOTA5IDE1LjQ3OWgxMC43NXYxMC43NWgtMTAuNzV6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIvPjxjaXJjbGUgZmlsbD0iIzAwMCIgY3g9IjcxLjUiIGN5PSI3LjUiIHI9IjEuNSIvPjxjaXJjbGUgZmlsbD0iIzAwMCIgY3g9IjE3MC41IiBjeT0iOTUuNSIgcj0iMS41Ii8+PGNpcmNsZSBmaWxsPSIjMDAwIiBjeD0iODEuNSIgY3k9IjEzNC41IiByPSIxLjUiLz48Y2lyY2xlIGZpbGw9IiMwMDAiIGN4PSIxMy41IiBjeT0iMjMuNSIgcj0iMS41Ii8+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTkzIDcxaDN2M2gtM3ptMzMgODRoM3YzaC0zem0tODUgMThoM3YzaC0zeiIvPjxwYXRoIGQ9Ik0zOS4zODQgNTEuMTIybDUuNzU4LTQuNDU0IDYuNDUzIDQuMjA1LTIuMjk0IDcuMzYzaC03Ljc5bC0yLjEyNy03LjExNHpNMTMwLjE5NSA0LjAzbDEzLjgzIDUuMDYyLTEwLjA5IDcuMDQ4LTMuNzQtMTIuMTF6bS04MyA5NWwxNC44MyA1LjQyOS0xMC44MiA3LjU1Ny00LjAxLTEyLjk4N3pNNS4yMTMgMTYxLjQ5NWwxMS4zMjggMjAuODk3TDIuMjY1IDE4MGwyLjk0OC0xOC41MDV6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIvPjxwYXRoIGQ9Ik0xNDkuMDUgMTI3LjQ2OHMtLjUxIDIuMTgzLjk5NSAzLjM2NmMxLjU2IDEuMjI2IDguNjQyLTEuODk1IDMuOTY3LTcuNzg1LTIuMzY3LTIuNDc3LTYuNS0zLjIyNi05LjMzIDAtNS4yMDggNS45MzYgMCAxNy41MSAxMS42MSAxMy43MyAxMi40NTgtNi4yNTcgNS42MzMtMjEuNjU2LTUuMDczLTIyLjY1NC02LjYwMi0uNjA2LTE0LjA0MyAxLjc1Ni0xNi4xNTcgMTAuMjY4LTEuNzE4IDYuOTIgMS41ODQgMTcuMzg3IDEyLjQ1IDIwLjQ3NiAxMC44NjYgMy4wOSAxOS4zMzEtNC4zMSAxOS4zMzEtNC4zMSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48L3N2Zz4=');
+    opacity: 0.1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height:100%;
+    position: absolute;
+    z-index: -1;   
+  } */
+  #chat-input {
+    background: #f4f7f9;
+    width:100%; 
+    position:relative;
+    height:47px;  
+    padding-top:10px;
+    padding-right:50px;
+    padding-bottom:10px;
+    padding-left:15px;
+    border:none;
+    resize:none;
+    outline:none;
+    border:1px solid #ccc;
+    color:#888;
+    border-top:none;
+    border-bottom-right-radius:5px;
+    border-bottom-left-radius:5px;
+    overflow:hidden;  
+  }
+  .chat-input > form {
+      margin-bottom: 0;
+  }
+  #chat-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #ccc;
+  }
+  #chat-input::-moz-placeholder { /* Firefox 19+ */
+    color: #ccc;
+  }
+  #chat-input:-ms-input-placeholder { /* IE 10+ */
+    color: #ccc;
+  }
+  #chat-input:-moz-placeholder { /* Firefox 18- */
+    color: #ccc;
+  }
+  .chat-submit {  
+    position:absolute;
+    bottom:3px;
+    right:10px;
+    background: transparent;
+    box-shadow:none;
+    border:none;
+    border-radius:50%;
+    color:#5A5EB9;
+    width:35px;
+    height:35px;  
+  }
+  .chat-logs {
+    padding:15px; 
+    height:370px;
+    overflow-y:scroll;
+  }
+  
+  .chat-logs::-webkit-scrollbar-track
+  {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+      background-color: #F5F5F5;
+  }
+  
+  .chat-logs::-webkit-scrollbar
+  {
+      width: 5px;  
+      background-color: #F5F5F5;
+  }
+  
+  .chat-logs::-webkit-scrollbar-thumb
+  {
+      background-color: #5A5EB9;
+  }
+  
+  
+  
+  @media only screen and (max-width: 500px) {
+     .chat-logs {
+          height:40vh;
+      }
+  }
+  
+  .chat-msg.user > .msg-avatar img {
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    float:left;
+    width:15%;
+  }
+  .chat-msg.self > .msg-avatar img {
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    float:right;
+    width:15%;
+  }
+  .cm-msg-text {
+    background:white;
+    padding:10px 15px 10px 15px;  
+    color:#666;
+    max-width:75%;
+    float:left;
+    margin-left:10px; 
+    position:relative;
+    margin-bottom:20px;
+    border-radius:30px;
+  }
+  .chat-msg {
+    clear:both;    
+  }
+  .chat-msg.self > .cm-msg-text {  
+    float:right;
+    margin-right:10px;
+    background: #5A5EB9;
+    color:white;
+  }
+  .cm-msg-button>ul>li {
+    list-style:none;
+    float:left;
+    width:50%;
+  }
+  .cm-msg-button {
+      clear: both;
+      margin-bottom: 70px;
+  }
+
+
+  .chat-start-button{
+      display: inline-block;
+      padding: 10px 20px;
+      border: 1px solid black;
+      border-radius: 25px;
+  }
+  .chat-start-button svg{
+    width: 25px;
+    vertical-align: middle;
+  }
+  img{
+      display: block;
+      border: 0;
+      max-width: 100%;
+  }
+  svg{
+      width: 25px;
+  }
+
+  ul,li{
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+  }
+  a{
+    text-decoration: none;
+  }
+
+  .chat-box-body .bot-logo{
+    height: 80px;
+    background: red;
+    width: 80px;
+    text-align: center;
+    border-radius: 50%;
+    position: relative;
+    top: -35px;
+    left: 25px;
+  }
+  .chat-box-body svg{
+    width: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    position: relative;
+
+  }
+
+  .faq-list{
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 5px 0;
+  }
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="center-text">
+        <h2>ChatBox UI</h2>
+        <p>Message send and scroll to bottom enabled </p>
+      </div> 
+    <div id="body"> 
+      
+    <div id="chat-circle" class="btn btn-raised">
+            <div id="chat-overlay"></div>
+                <i class="material-icons">speaker_phone</i>
+        </div>
+      
+      <div class="chat-box">
+        <div class="chat-box-header">
+          <h3>IRIS</h3>
+          <span class="chat-box-toggle"><i class="material-icons">close</i></span>
+          <p>Hello <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 122.88 119.39"><title>chat-box</title><path d="M15.33,0H87.84a15.36,15.36,0,0,1,15.33,15.33V59.38A15.36,15.36,0,0,1,87.84,74.71h-46l-23.28,20a2.58,2.58,0,0,1-3.64-.29,2.54,2.54,0,0,1-.61-1.84L15.53,74.7h-.2A15.36,15.36,0,0,1,0,59.38V15.33A15.36,15.36,0,0,1,15.33,0Zm95.36,32.33a15.09,15.09,0,0,1,12.19,14.75V83.74a15.07,15.07,0,0,1-15,15h-.54L108.59,117h0a2.27,2.27,0,0,1-3.73,1.87L81.49,98.17H31.2L46.36,82.75H98A12.78,12.78,0,0,0,110.73,70V33.34c0-.34,0-.68,0-1ZM30.42,47.58a2.59,2.59,0,1,1,0-5.17h34a2.59,2.59,0,1,1,0,5.17Zm0-17.73a2.59,2.59,0,1,1,0-5.17H75.71a2.59,2.59,0,1,1,0,5.17ZM87.83,5.17H15.33A10.17,10.17,0,0,0,5.17,15.33V59.38A10.19,10.19,0,0,0,15.33,69.54h3.15a2.58,2.58,0,0,1,2.39,2.74l-1,14.49,19.19-16.5a2.6,2.6,0,0,1,1.82-.75H87.83A10.21,10.21,0,0,0,98,59.38V15.33A10.19,10.19,0,0,0,87.83,5.17Z"/></svg></p>
+          <p>I am Iris, a Virtual Assistant</p>
+          <p>How may I help you?</p>
+       
+        </div>
+        <div class="chat-box-body">
+           <div class="bot-logo"><svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 122.88 119.39"><title>chat-box</title><path d="M15.33,0H87.84a15.36,15.36,0,0,1,15.33,15.33V59.38A15.36,15.36,0,0,1,87.84,74.71h-46l-23.28,20a2.58,2.58,0,0,1-3.64-.29,2.54,2.54,0,0,1-.61-1.84L15.53,74.7h-.2A15.36,15.36,0,0,1,0,59.38V15.33A15.36,15.36,0,0,1,15.33,0Zm95.36,32.33a15.09,15.09,0,0,1,12.19,14.75V83.74a15.07,15.07,0,0,1-15,15h-.54L108.59,117h0a2.27,2.27,0,0,1-3.73,1.87L81.49,98.17H31.2L46.36,82.75H98A12.78,12.78,0,0,0,110.73,70V33.34c0-.34,0-.68,0-1ZM30.42,47.58a2.59,2.59,0,1,1,0-5.17h34a2.59,2.59,0,1,1,0,5.17Zm0-17.73a2.59,2.59,0,1,1,0-5.17H75.71a2.59,2.59,0,1,1,0,5.17ZM87.83,5.17H15.33A10.17,10.17,0,0,0,5.17,15.33V59.38A10.19,10.19,0,0,0,15.33,69.54h3.15a2.58,2.58,0,0,1,2.39,2.74l-1,14.49,19.19-16.5a2.6,2.6,0,0,1,1.82-.75H87.83A10.21,10.21,0,0,0,98,59.38V15.33A10.19,10.19,0,0,0,87.83,5.17Z"/></svg></div> 
+            
+            <div class="faq">
+                Frequently Asked Questions ?
+                <ul>
+                    <li class="faq-list">Can I redeem my FB  before the original term?</li>
+                    <li class="faq-list">how o i pay my Credit car bill?</li>
+                </ul>
+            </div>
+         
+           
+          </div><!--chat-log -->
+          <div class="chat-start">      
+          <a href="#" class="chat-start-button">
+              <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 122.88 119.39"><title>chat-box</title><path d="M15.33,0H87.84a15.36,15.36,0,0,1,15.33,15.33V59.38A15.36,15.36,0,0,1,87.84,74.71h-46l-23.28,20a2.58,2.58,0,0,1-3.64-.29,2.54,2.54,0,0,1-.61-1.84L15.53,74.7h-.2A15.36,15.36,0,0,1,0,59.38V15.33A15.36,15.36,0,0,1,15.33,0Zm95.36,32.33a15.09,15.09,0,0,1,12.19,14.75V83.74a15.07,15.07,0,0,1-15,15h-.54L108.59,117h0a2.27,2.27,0,0,1-3.73,1.87L81.49,98.17H31.2L46.36,82.75H98A12.78,12.78,0,0,0,110.73,70V33.34c0-.34,0-.68,0-1ZM30.42,47.58a2.59,2.59,0,1,1,0-5.17h34a2.59,2.59,0,1,1,0,5.17Zm0-17.73a2.59,2.59,0,1,1,0-5.17H75.71a2.59,2.59,0,1,1,0,5.17ZM87.83,5.17H15.33A10.17,10.17,0,0,0,5.17,15.33V59.38A10.19,10.19,0,0,0,15.33,69.54h3.15a2.58,2.58,0,0,1,2.39,2.74l-1,14.49,19.19-16.5a2.6,2.6,0,0,1,1.82-.75H87.83A10.21,10.21,0,0,0,98,59.38V15.33A10.19,10.19,0,0,0,87.83,5.17Z"/></svg>
+             Start Conversation Now </a>
+          </div>
+        </div>
+      </div>
+      
+      
+      
+      
+    </div>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <script>
+         $("#chat-circle").click(function() {    
+    $("#chat-circle").toggle('scale');
+    $(".chat-box").toggle('scale');
+  })
+  
+  $(".chat-box-toggle").click(function() {
+    $("#chat-circle").toggle('scale');
+    $(".chat-box").toggle('scale');
+  })
+   </script>
+</body>
+</html>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
